@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Business Store | Premium E-Commerce</title>
+    
+    <!-- PAYSTACK INLINE LIBRARY -->
+    <script src="https://js.paystack.co/v1/inline.js">// Change this placeholder text:
+const paystackPublicKey = 'pk_test_your_actual_public_key_goes_here'; 
+</script>
+
+    <style>
+        /* --- Luxury Theme Colors --- */
+        :root {
+            --royal-black: #0f0f11;
+            --royal-dark: #1a1a1e;
+            --royal-gold: #d4af37;
+            --royal-gold-hover: #f3e5ab;
+            --text-light: #ffffff;
+            --text-gray: #a0a0a5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--royal-black);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--royal-dark);
+            border-bottom: 2px solid var(--royal-gold);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--royal-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--royal-gold);
+        }
+
+        .auth-btn {
+            background-color: transparent;
+            border: 1px solid var(--royal-gold);
+            color: var(--royal-gold);
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background-color: var(--royal-gold);
+            color: var(--royal-black);
+        }
+
+        /* --- Hero Banner --- */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200') no-repeat center center/cover;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .hero h1 span {
+            color: var(--royal-gold);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Layout Sections --- */
+        main {
+            padding: 2rem 5% 4rem 5%;
+        }
+
+        .catalog-section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #2a2a30;
+        }
+
+        .catalog-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+        }
+
+        .section-title span {
+            color: var(--royal-gold);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--royal-gold);
+            margin: 0.5rem auto 0;
+        }
+
+        /* --- Product Grid --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .product-card {
+            background-color: var(--royal-dark);
+            border: 1px solid #2a2a30;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--royal-gold);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background-color: #2a2a30;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            height: 40px; /* Keeps text aligned across cards */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-price {
+            color: var(--royal-gold);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .buy-now-btn {
+            background-color: var(--royal-gold);
+            color: var(--royal-black);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-btn:hover {
+            background-color: var(--royal-gold-hover);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--royal-dark);
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #2a2a30;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation Links Linked to Sections -->
+    <header>
+        <div class="logo">Royal Business</div>
+        <nav>
+            <ul>
+                <li><a href="#electronics">Electronics</a></li>
+                <li><a href="#smarthome">Smart Home</a></li>
+                <li><a href="#clothing">Clothing</a></li>
+                <li><a href="#food">Premium Food</a></li>
+            </ul>
+        </nav>
+        <button class="auth-btn">Login / Register</button>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <h1>The <span>Royal Business</span> Experience</h1>
+        <p>Discover a curated world of high-end technology, luxury apparel, premium smart devices, and gourmet culinary essentials.</p>
+    </section>
+
+    <!-- Main Store Catalog -->
+    <main>
+        
+        <!-- SECTION 1: ELECTRONICS -->
+        <section id="electronics" class="catalog-section">
+            <h2 class="section-title">Premium <span>Electronics</span></h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Royal Signature Smartphone</div>
+                        <div class="product-price">₦750,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(750000, 'Royal Signature Smartphone')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Elite Executive Laptop</div>
+                        <div class="product-price">₦1,200,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(1200000, 'Elite Executive Laptop')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Pro Sound Wireless Headphones</div>
+                        <div class="product-price">₦180,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(180000, 'Pro Sound Wireless Headphones')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: SMART HOME GADGETS -->
+        <section id="smarthome" class="catalog-section">
+            <h2 class="section-title">Smart Home <span>Gadgets</span></h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">OmniShield Smart Hub & Lock</div>
+                        <div class="product-price">₦320,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(320000, 'OmniShield Smart Hub & Lock')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Ambient Intelligent Lighting Set</div>
+                        <div class="product-price">₦145,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(145000, 'Ambient Intelligent Lighting Set')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1545259742-b4fe8fea361a?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Cinematic 4K Ultra Short Throw Projector</div>
+                        <div class="product-price">₦2,100,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(2100000, 'Cinematic 4K Ultra Short Throw Projector')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CLOTHING -->
+        <section id="clothing" class="catalog-section">
+            <h2 class="section-title">Luxury <span>Clothing</span></h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Bespoke Royal Silk Blazer</div>
+                        <div class="product-price">₦450,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(450000, 'Bespoke Royal Silk Blazer')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Monogram Cashmere Sweater</div>
+                        <div class="product-price">₦280,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(280000, 'Monogram Cashmere Sweater')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Limited Edition Royal Footwear</div>
+                        <div class="product-price">₦390,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(390000, 'Limited Edition Royal Footwear')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: FOOD / CONFECTIONERY -->
+        <section id="food" class="catalog-section">
+            <h2 class="section-title">Gourmet <span>Food Sections</span></h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1540914124281-342587941389?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Royal Reserve Organic Saffron & Spices</div>
+                        <div class="product-price">₦95,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(950000, 'Royal Reserve Organic Saffron & Spices')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1548907040-4d42b52115ca?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Artisanal Luxury Chocolate Hamper</div>
+                        <div class="product-price">₦120,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(120000, 'Artisanal Luxury Chocolate Hamper')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=500');"></div>
+                    <div class="product-info">
+                        <div class="product-name">Prestige Cold-Pressed Gold Oil Set</div>
+                        <div class="product-price">₦165,000</div>
+                        <button class="buy-now-btn" onclick="initializePayment(165000, 'Prestige Cold-Pressed Gold Oil Set')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Royal Business Store. All Rights Reserved. Secured by Paystack.</p>
+    </footer>
+
+    <!-- LOGIC SCRIPT (Voice Greeting & Paystack Functions) -->
+    <script>
+        // Automated Voice Greeting Loop
+        window.addEventListener('click', () => {
+            if (!sessionStorage.getItem('voiceGreeted')) {
+                const message = new SpeechSynthesisUtterance("Welcome to the Royal Business Store. Enjoy your premium shopping experience.");
+                message.volume = 1;
+                message.rate = 1;
+                message.pitch = 1.1; 
+                window.speechSynthesis.speak(message);
+                sessionStorage.setItem('voiceGreeted', 'true');
+            }
+        }, { once: true });
+
+        // Live Paystack Pop-up Handler
+        function initializePayment(amountInNaira, productName) {
+            const amountInKobo = amountInNaira * 100; 
+            const userEmail = "customer@royalbusiness.com"; 
+            
+            // Put your actual Paystack Public Key inside the quotes below
+            const paystackPublicKey = 'pk_test_your_actual_public_key_goes_here'; 
+
+            let handler = PaystackPop.setup({
+                key: paystackPublicKey,
+                email: userEmail,
+                amount: amountInKobo,
+                currency: "NGN",
+                ref: 'ROYAL-' + Math.floor((Math.random() * 1000000000) + 1),
+                metadata: {
+                    custom_fields: [
+                        {
+                            display_name: "Product Purchased",
+                            variable_name: "product_purchased",
+                            value: productName
+                        }
+                    ]
+                },
+                callback: function(response) {
+                    alert('Payment Successful! Reference ID: ' + response.reference);
+                    window.location.href = "success.html?reference=" + response.reference;
+                },
+                onClose: function() {
+                    alert('Transaction canceled.');
+                }
+            });
+
+            handler.openIframe();
+        }
+    </script>
+</body>
+</html>

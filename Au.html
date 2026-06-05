@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal | Royal Business Store</title>
+    <style>
+        /* --- Luxury Theme Colors --- */
+        :root {
+            --royal-black: #0f0f11;
+            --royal-dark: #1a1a1e;
+            --royal-gold: #d4af37;
+            --royal-gold-hover: #f3e5ab;
+            --text-light: #ffffff;
+            --text-gray: #a0a0a5;
+            --border-color: #2a2a30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--royal-black);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--royal-dark);
+            border-bottom: 2px solid var(--royal-gold);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--royal-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            color: var(--royal-gold);
+        }
+
+        /* --- Main Container --- */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 5%;
+        }
+
+        /* --- Auth Card (Login / Signup) --- */
+        .auth-card {
+            background-color: var(--royal-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .auth-card h2 {
+            font-size: 1.8rem;
+            color: var(--royal-gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--royal-black);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--royal-gold);
+        }
+
+        .auth-submit-btn {
+            background-color: var(--royal-gold);
+            color: var(--royal-black);
+            border: none;
+            padding: 0.75rem;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .auth-submit-btn:hover {
+            background-color: var(--royal-gold-hover);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .toggle-form span {
+            color: var(--royal-gold);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* --- PROFILE PANEL LAYOUT (Hidden by default) --- */
+        .profile-container {
+            width: 100%;
+            max-width: 1000px;
+            display: none; /* Controlled by JS */
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container { grid-template-columns: 1fr; }
+        }
+
+        .profile-sidebar {
+            background-color: var(--royal-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            height: fit-content;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--royal-gold);
+            margin: 0 auto 1rem auto;
+            background-color: var(--royal-black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: var(--royal-gold);
+        }
+
+        .profile-sidebar h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-sidebar p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid #ff4d4d;
+            color: #ff4d4d;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .profile-main {
+            background-color: var(--royal-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .profile-main h2 {
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Order Table --- */
+        .order-table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--royal-gold);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-delivered { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .status-processing { background-color: rgba(241, 196, 15, 0.2); color: #f1c40f; }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--royal-dark);
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="index.html" class="logo">Royal Business</a>
+        <a href="index.html" class="back-btn">&larr; Back to Store</a>
+    </header>
+
+    <!-- Main Content Arena -->
+    <main>
+
+        <!-- 1. LOGIN / SIGNUP VIEW -->
+        <div class="auth-card" id="auth-box">
+            <!-- Box Title -->
+            <h2 id="auth-title">Client Login</h2>
+            
+            <!-- Standard Login Form Structure -->
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group" id="name-group" style="display: none;">
+                    <label for="client-name">Full Name</label>
+                    <input type="text" id="client-name" placeholder="His/Her Excellency Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="client-email">Email Address</label>
+                    <input type="email" id="client-email" required placeholder="client@royalbusiness.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="client-password">Password</label>
+                    <input type="password" id="client-password" required placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="submit-btn">Access Account</button>
+            </form>
+
+            <div class="toggle-form" id="toggle-message">
+                New to the Circle? <span onclick="switchForm('signup')">Create Profile</span>
+            </div>
+        </div>
+
+        <!-- 2. OFFICIAL PROFILE PANEL VIEW (Shown only after submission simulation) -->
+        <div class="profile-container" id="profile-box">
+            <!-- Sidebar Metrics -->
+            <div class="profile-sidebar">
+                <div class="avatar">👑</div>
+                <h3 id="display-user-name">Aliko Dangote</h3>
+                <p id="display-user-email">vip.client@royal.com</p>
+                <button class="logout-btn" onclick="logoutUser()">Log Out Portal</button>
+            </div>
+
+            <!-- Detailed Past Orders Display Box -->
+            <div class="profile-main">
+                <h2>Executive Order History</h2>
+                <div class="order-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Product Item</th>
+                                <th>Total Price</th>
+                                <th>Delivery Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ROYAL-8942</td>
+                                <td>Royal Signature Smartphone</td>
+                                <td>₦750,000</td>
+                                <td><span class="status-badge status-delivered">Delivered</span></td>
+                            </tr>
+                            <tr>
+                                <td>#ROYAL-7132</td>
+                                <td>Cinematic 4K Ultra Short Projector</td>
+                                <td>₦2,100,000</td>
+                                <td><span class="status-badge status-processing">Processing</span></td>
+                            </tr>
+                            <tr>
+                                <td>#ROYAL-4021</td>
+                                <td>Artisanal Luxury Chocolate Hamper</td>
+                                <td>₦120,000</td>
+                                <td><span class="status-badge status-delivered">Delivered</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Royal Business Store. Secure Client Environment.</p>
+    </footer>
+
+    <!-- INTERACTIVE VIEW HANDLING SCRIPT -->
+    <script>
+        let currentMode = 'login';
+
+        // Toggles layouts cleanly between Login and Signup screens
+        function switchForm(mode) {
+            currentMode = mode;
+            const nameGroup = document.getElementById('name-group');
+            const authTitle = document.getElementById('auth-title');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleMessage = document.getElementById('toggle-message');
+
+            if (mode === 'signup') {
+                nameGroup.style.display = 'block';
+                authTitle.innerText = "Create Royal Profile";
+                submitBtn.innerText = "Register Profile";
+                toggleMessage.innerHTML = "Already Registered? <span onclick=\"switchForm('login')\">Login Here</span>";
+            } else {
+                nameGroup.style.display = 'none';
+                authTitle.innerText = "Client Login";
+                submitBtn.innerText = "Access Account";
+                toggleMessage.innerHTML = "New to the Circle? <span onclick=\"switchForm('signup')\">Create Profile</span>";
+            }
+        }
+
+        // Simulates database check and logs user into profile dashboard instantly
+        function handleAuthSubmit(event) {
+            event.preventDefault(); // Stop page reload
+            
+            const emailValue = document.getElementById('client-email').value;
+            const nameValue = document.getElementById('client-name').value || "Premium Royal Member";
+
+            // Map variables to profile display elements dynamically
+            document.getElementById('display-user-email').innerText = emailValue;
+            document.getElementById('display-user-name').innerText = currentMode === 'signup' ? nameValue : "Premium Royal Member";
+
+            // UI Screen Swapping
+            document.getElementById('auth-box').style.display = 'none';
+            document.getElementById('profile-box').style.display = 'grid';
+        }
+
+        // Logs out of dashboard and restores access gate view
+        function logoutUser() {
+            document.getElementById('profile-box').style.display = 'none';
+            document.getElementById('auth-box').style.display = 'block';
+            document.getElementById('auth-form').reset();
+            switchForm('login');
+        }
+    </script>
+</body>
+</html>

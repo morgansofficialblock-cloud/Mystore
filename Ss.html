@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Royal Business Store</title>
+    <style>
+        /* --- Luxury Theme Colors --- */
+        :root {
+            --royal-black: #0f0f11;
+            --royal-dark: #1a1a1e;
+            --royal-gold: #d4af37;
+            --royal-gold-hover: #f3e5ab;
+            --text-light: #ffffff;
+            --text-gray: #a0a0a5;
+            --success-green: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--royal-black);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* --- Success Card Layout --- */
+        .success-card {
+            background-color: var(--royal-dark);
+            border: 2px solid var(--royal-gold);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Gold Ring and Checkmark Asset */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--royal-gold);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 2rem auto;
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .icon-container svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--royal-gold);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status-tag {
+            color: var(--success-green);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        p {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* --- Order Details Panel --- */
+        .details-panel {
+            background-color: #242429;
+            border: 1px solid #33333a;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--text-gray);
+        }
+
+        .detail-value {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* --- Action Buttons --- */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .primary-btn {
+            background-color: var(--royal-gold);
+            color: var(--royal-black);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            display: block;
+        }
+
+        .primary-btn:hover {
+            background-color: var(--royal-gold-hover);
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--text-gray);
+            border: 1px solid #33333a;
+            padding: 0.8rem 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--royal-gold);
+            color: var(--royal-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-container">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+        </div>
+
+        <h1>Order Confirmed</h1>
+        <span class="status-tag">Payment Verified</span>
+        
+        <p>Thank you for your patronage. Your premium order is being prepared and an executive confirmation email has been dispatched to your address.</p>
+
+        <div class="details-panel">
+            <div class="detail-row">
+                <span class="detail-label">Payment Gateway:</span>
+                <span class="detail-value">Paystack Live</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-row-label detail-label">Transaction ID:</span>
+                <span class="detail-value" id="tx-reference">Fetching...</span>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="index.html" class="primary-btn">Continue Shopping</a>
+            <button class="secondary-btn" onclick="window.print()">Print Invoice Receipt</button>
+        </div>
+    </div>
+
+    <script>
+        // When Paystack redirects here, it appends '?reference=ROYAL-XXXXX' to the URL.
+        // This JavaScript automatically reads that URL parameter and displays it on screen!
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paystackReference = urlParams.get('reference');
+
+            const refDisplayElement = document.getElementById('tx-reference');
+            
+            if (paystackReference) {
+                refDisplayElement.innerText = paystackReference;
+            } else {
+                // Fallback standard text if page is visited directly without an active transaction
+                refDisplayElement.innerText = "ROYAL-OFFLINE-VAL";
+            }
+        });
+    </script>
+</body>
+</html>
